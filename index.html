@@ -1,67 +1,87 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ลอยกระทงออนไลน์ KUB</title>
-<link rel="stylesheet" href="styles.css">
-<script src="https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.min.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ลอยกระทงออนไลน์ — Krathong KUB</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <h1>ลอยกระทงออนไลน์ 🕊️</h1>
-    <p class="subtitle">ธีมไว้อาลัย — ซื้อแล้วเผาอัตโนมัติ</p>
-    <div class="wallet">
+  <header class="topbar">
+    <h1>ลอยกระทงออนไลน์ (KUB)</h1>
+    <div class="controls">
       <button id="connectBtn">เชื่อมต่อ MetaMask</button>
-      <div id="addr"></div>
-      <div id="balance"></div>
       <select id="networkSelect">
-        <option value="testnet">KUB Testnet</option>
-        <option value="mainnet">KUB Mainnet</option>
+        <option value="custom">เลือกเครือข่าย (ใส่ RPC ด้านล่าง)</option>
+        <option value="testnet">KUB Testnet (ตัวอย่าง)</option>
+        <option value="mainnet">KUB Mainnet (ตัวอย่าง)</option>
       </select>
     </div>
   </header>
 
-  <main>
-    <section class="left-panel">
+  <main class="container">
+    <section class="left">
       <h2>สร้างกระทง</h2>
+      <p>ลากชิ้นฐานกระทงมาประกอบและจัดตำแหน่งด้วยเมาส์ (หรือการสัมผัส)</p>
       <div id="partsPalette" class="palette">
-        <img src="images/base.png" alt="ฐานกระทง" class="part" data-type="base">
-        <img src="images/flower.png" alt="ดอกไม้" class="part" data-type="flower">
-        <img src="images/candle.png" alt="เทียน" class="part" data-type="candle">
-        <img src="images/incense.png" alt="ธูป" class="part" data-type="incense">
+        <div class="part" data-part="ฐาน">ฐานกระทง</div>
+        <div class="part" data-part="ดอกไม้">ดอกไม้</div>
+        <div class="part" data-part="เทียน">เทียน</div>
+        <div class="part" data-part="เหรียญ">เหรียญ</div>
       </div>
 
       <div id="canvas" class="canvas" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)">
-        <p class="canvasHint">ลากชิ้นส่วนมาวางที่นี่</p>
+        <p class="canvasHint">ลากชิ้นส่วนมาวางที่นี่เพื่อประกอบกระทง</p>
       </div>
-      <button id="resetCanvas">รีเซ็ตกระทง</button>
 
-      <label>จำนวน KUB:</label>
-      <input type="number" id="amountInput" step="0.0001" value="0.3275">
-      <label>คำอธิษฐาน:</label>
-      <textarea id="wishInput" rows="3" maxlength="200" placeholder="ขอให้..."></textarea>
-      <label>คู่ลอย (ไม่บังคับ):</label>
-      <input type="text" id="pairInput" placeholder="ใส่ชื่อคู่ลอย">
+      <div class="composeControls">
+        <button id="resetCanvas">รีเซ็ตกระทง</button>
+        <label>ชื่อผู้สร้าง (Creator Address): <input id="creatorAddress" placeholder="0x..." /></label>
+        <label>ค่าธรรมเนียม (%) : <input id="feePercent" type="number" min="0" max="50" step="0.01" value="2" /></label>
+      </div>
 
-      <button id="floatBtn">ลอยกระทง 🌊</button>
+      <hr/>
+
+      <h2>หยอดเงินใส่กระทง</h2>
+      <label>จำนวน KUB (ค่าพื้นฐาน 0.3275) : <input id="amountInput" type="number" step="0.000000000000000001" value="0.3275" /></label>
+      <label>เขียนคำอธิษฐาน : <textarea id="wishInput" rows="3" placeholder="พิมพ์คำอธิษฐานของคุณที่นี่..."></textarea></label>
+      <div class="extra">
+        <label>เพิ่มคู่ลอย (ชื่อ/ที่อยากให้ร่วม): <input id="pairInput" placeholder="ชื่อคนที่สอง (ไม่บังคับ)" /></label>
+      </div>
+
+      <div class="actions">
+        <button id="previewBtn">ดูตัวอย่างกระทง</button>
+        <button id="burnBtn" class="primary">จ่าย & เผา (Burn)</button>
+      </div>
+
+      <div id="txStatus" class="status"></div>
     </section>
 
-    <section class="right-panel">
-      <h2>กระทงล่าสุด</h2>
-      <div id="krathongList" class="krathong-list"></div>
+    <aside class="right">
+      <h3>สรุปยอด (เก็บในเครื่อง)</h3>
+      <div class="totals">
+        <p>ยอดรวมทั้งหมดที่ผู้ใช้บริจาค: <span id="totalDonated">0</span> KUB</p>
+        <p>ยอดรวมที่ถูกเผา (burn): <span id="totalBurned">0</span> KUB</p>
+        <p>ยอดค่าธรรมเนียมที่เก็บได้: <span id="totalFees">0</span> KUB</p>
+      </div>
 
-      <h3>สถิติรวม</h3>
-      <div>ยอดรวมที่เผา: <span id="totalBurned">0</span> KUB</div>
-      <div>ค่าธรรมเนียมรวม: <span id="totalFees">0</span> KUB</div>
-      <div>จำนวนธุรกรรมทั้งหมด: <span id="totalTx">0</span></div>
-    </section>
+      <h3>ประวัติการลอย</h3>
+      <div id="history" class="history"></div>
+
+      <hr/>
+      <h4>หมายเหตุ</h4>
+      <ul>
+        <li>ทดสอบบน Testnet ก่อนใช้งานจริง</li>
+        <li>ผู้ใช้งานต้องมี MetaMask และเชื่อมต่อ RPC ของเครือข่าย KUB (ใส่ URL RPC เองได้)</li>
+        <li>โค้ดนี้ส่งธุรกรรมโดยตรงจากผู้ใช้: รายการค่าธรรมเนียมจะถูกส่งไปยัง Creator address ก่อน จากนั้นส่วนที่เหลือจะถูกส่งไปยังที่อยู่เผา (0x...dEaD)</li>
+      </ul>
+    </aside>
   </main>
 
-  <footer>
-    <small>รองรับ KUB Chain (Testnet / Mainnet). ทดสอบบน Testnet ก่อน</small>
+  <footer class="footer">
+    <small>Krathong KUB — ตัวอย่างโค้ดโอเพนซอร์ส</small>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

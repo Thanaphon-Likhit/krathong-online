@@ -1,30 +1,29 @@
-body { margin:0; font-family:'Kanit',sans-serif; background:#121212; color:#eee; }
-header { text-align:center; padding:1rem; background:#1a1a1a; border-bottom:2px solid #444; }
-header h1 { margin:0; font-size:2rem; }
-header .subtitle { font-size:0.9rem; color:#aaa; margin:0.3rem 0; }
-.wallet { margin-top:0.5rem; display:flex; flex-direction:column; gap:0.5rem; align-items:center; }
-button { padding:0.5rem 1rem; border:none; border-radius:5px; background:#333; color:#fff; cursor:pointer; transition:0.2s; }
-button:hover { background:#555; }
+:root{--accent:#ff7a00;--muted:#666}
+*{box-sizing:border-box;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Noto Sans',Arial}
+body{margin:0;background:linear-gradient(180deg,#fffaff,#f3fbff);color:#111}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:rgba(255,255,255,0.8);backdrop-filter:blur(6px);border-bottom:1px solid #eee}
+.topbar h1{margin:0;font-size:18px}
+.controls{display:flex;gap:8px;align-items:center}
+.container{display:grid;grid-template-columns:1fr 340px;gap:20px;padding:20px}
+.left{background:#fff;padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+.right{background:#fff;padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+.palette{display:flex;gap:8px;margin-bottom:12px}
+.part{padding:10px 12px;border-radius:8px;background:linear-gradient(180deg,#fff,#ffe);border:1px solid #ffd;cursor:grab}
+.canvas{height:360px;border:2px dashed #ddd;border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.canvas .canvasHint{color:var(--muted)}
+.composeControls{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.composeControls input{padding:8px;border-radius:6px;border:1px solid #ddd}
+.actions{display:flex;gap:8px;margin-top:12px}
+button{padding:10px 14px;border-radius:8px;border:0;background:#eee;cursor:pointer}
+button.primary{background:var(--accent);color:#fff}
+.status{margin-top:12px;color:var(--muted)}
+.totals p{margin:6px 0}
+.history{max-height:320px;overflow:auto}
+.history .item{padding:8px;border-bottom:1px solid #f0f0f0}
+.footer{padding:12px;text-align:center;color:#666}
 
-main { display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; padding:1rem; }
-.left-panel, .right-panel { background:#1a1a1a; padding:1rem; border-radius:10px; flex:1 1 350px; max-width:500px; }
-.left-panel h2, .right-panel h2 { color:#ffc107; }
+/* draggable parts inside canvas */
+.canvas .placed{position:absolute;padding:6px 8px;background:rgba(255,255,255,0.95);border-radius:8px;border:1px solid #eee;cursor:move;user-select:none;touch-action:none}
 
-.palette { display:flex; gap:0.5rem; flex-wrap:wrap; justify-content:center; margin:0.5rem 0; }
-.palette img { width:60px; cursor:grab; border:2px solid #444; border-radius:5px; }
-.palette img:active { cursor:grabbing; }
-
-.canvas { position:relative; width:100%; height:250px; border:2px dashed #555; border-radius:10px; margin-bottom:0.5rem; overflow:hidden; }
-.canvasHint { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#666; font-size:0.9rem; text-align:center; }
-.placed { position:absolute; width:60px; height:60px; cursor:grab; }
-
-textarea,input[type="number"],input[type="text"] { width:100%; padding:0.3rem; border-radius:5px; border:none; background:#333; color:#eee; margin-bottom:0.5rem; }
-textarea:focus,input:focus { outline:2px solid #ffc107; }
-
-.krathong-list { display:flex; flex-direction:column-reverse; gap:0.5rem; max-height:400px; overflow-y:auto; border-top:1px solid #444; padding-top:0.5rem; }
-.krathong-item { background:#222; padding:0.5rem; border-radius:5px; font-size:0.9rem; }
-
-footer { text-align:center; padding:0.5rem; font-size:0.8rem; color:#888; }
-
-@media screen and (max-width:768px){ main{flex-direction:column;} .canvas{height:200px;} .placed{width:50px;height:50px;} button{padding:0.4rem 0.8rem;} }
-@media screen and (max-width:480px){ header h1{font-size:1.5rem;} .canvas{height:150px;} .placed{width:40px;height:40px;} }
+/* small responsive */
+@media(max-width:900px){.container{grid-template-columns:1fr}}

@@ -1,4 +1,4 @@
-const storageKey='krathong_kub_state_modern';
+const storageKey='krathong_kub_state';
 let state=JSON.parse(localStorage.getItem(storageKey)||JSON.stringify({totalBurned:0,totalFees:0,totalTx:0,history:[]}));
 
 const parts=document.querySelectorAll('.part');
@@ -16,6 +16,10 @@ const balanceEl=document.getElementById('balance');
 const amountInput=document.getElementById('amountInput')||document.getElementById('amount');
 const wishInput=document.getElementById('wishInput')||document.getElementById('wish');
 const pairInput=document.getElementById('pairInput')||document.getElementById('pair');
+
+const networkSelect=document.getElementById('networkSelect');
+
+let provider, signer;
 
 // Drag & Drop
 parts.forEach(p=>{p.draggable=true;p.addEventListener('dragstart',e=>e.dataTransfer.setData('text/plain',p.src));});
@@ -35,8 +39,7 @@ function placePart(src,x,y){
   canvas.appendChild(el);
 }
 
-// MetaMask Connect
-let provider, signer;
+// Connect MetaMask
 async function connectWallet(){
   if(!window.ethereum){ alert('ติดตั้ง MetaMask ก่อน'); return; }
   provider=new ethers.BrowserProvider(window.ethereum);
@@ -48,36 +51,6 @@ async function connectWallet(){
 }
 connectBtn.addEventListener('click',connectWallet);
 
-// Float Krathong
+// Float Krathong (simulate burn & fee)
 floatBtn.addEventListener('click',()=>{
-  const partsPlaced=Array.from(canvas.querySelectorAll('.placed')).map(p=>p.src.split('/').pop());
-  const amt=parseFloat(amountInput.value)||0.1;
-  const wish=wishInput.value||'';
-  const pair=pairInput.value||'';
-  const entry={time:new Date().toISOString(),parts:partsPlaced,amount:amt,wish,pair};
-  state.history.unshift(entry);
-  state.totalTx=state.history.length;
-  state.totalBurned+=amt*0.9;
-  state.totalFees+=amt*0.1;
-  localStorage.setItem(storageKey,JSON.stringify(state));
-  renderKrathongs();
-  canvas.innerHTML='<p class="canvasHint">ลากชิ้นส่วนมาวางที่นี่</p>';
-  amountInput.value='0.3275';
-  wishInput.value=''; pairInput.value='';
-});
-
-function renderKrathongs(){
-  krathongList.innerHTML='';
-  state.history.forEach(h=>{
-    const div=document.createElement('div'); div.className='krathong-item';
-    div.innerHTML=`<strong>${h.amount.toFixed(4)} KUB</strong> — ${h.wish||'(ไม่มีคำอธิษฐาน)'}<br/><small>${new Date(h.time).toLocaleString()}</small>`;
-    krathongList.appendChild(div);
-  });
-  totalBurnedEl.innerText=state.totalBurned.toFixed(4);
-  totalFeesEl.innerText=state.totalFees.toFixed(4);
-  totalTxEl.innerText=state.totalTx;
-}
-renderKrathongs();
-
-// Reset Canvas
-document.getElementById('resetCanvas').addEventListener('click',()=>{canvas.innerHTML='<p class="canvasHint">ลากชิ้นส่วนมาวางที่นี่</p>';});
+ 

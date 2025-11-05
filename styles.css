@@ -1,41 +1,30 @@
-body {
-  margin: 0; font-family: 'Kanit', sans-serif; background: #121212; color: #eee;
-}
-header { text-align: center; padding: 1rem; background: #1a1a1a; border-bottom: 2px solid #444; }
-header h1 { margin: 0; font-size: 2rem; }
-header .subtitle { color: #aaa; font-size: 0.9rem; margin: 0.3rem 0; }
-.wallet { margin-top: 0.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
-button { cursor: pointer; padding: 0.5rem 1rem; background: #333; border: none; color: #fff; border-radius: 5px; transition: 0.2s; }
-button:hover { background: #555; }
+body { margin:0; font-family:'Kanit',sans-serif; background:#121212; color:#eee; }
+header { text-align:center; padding:1rem; background:#1a1a1a; border-bottom:2px solid #444; }
+header h1 { margin:0; font-size:2rem; }
+header .subtitle { font-size:0.9rem; color:#aaa; margin:0.3rem 0; }
+.wallet { margin-top:0.5rem; display:flex; flex-direction:column; gap:0.5rem; align-items:center; }
+button { padding:0.5rem 1rem; border:none; border-radius:5px; background:#333; color:#fff; cursor:pointer; transition:0.2s; }
+button:hover { background:#555; }
 
-main { display: flex; flex-wrap: wrap; padding: 1rem; gap: 1rem; justify-content: center; }
-.left-panel, .right-panel { background: #1a1a1a; padding: 1rem; border-radius: 10px; flex: 1 1 350px; max-width: 500px; }
-.left-panel h2, .right-panel h2 { margin-top: 0; color: #ffc107; }
-.palette { display: flex; gap: 0.5rem; margin: 0.5rem 0; flex-wrap: wrap; justify-content: center; }
-.palette img { width: 60px; cursor: grab; border: 2px solid #444; border-radius: 5px; }
-.palette img:active { cursor: grabbing; }
+main { display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; padding:1rem; }
+.left-panel, .right-panel { background:#1a1a1a; padding:1rem; border-radius:10px; flex:1 1 350px; max-width:500px; }
+.left-panel h2, .right-panel h2 { color:#ffc107; }
 
-.canvas { position: relative; width: 100%; height: 250px; border: 2px dashed #555; border-radius: 10px; margin-bottom: 0.5rem; overflow: hidden; }
-.canvasHint { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #666; font-size: 0.9rem; text-align: center; }
-.placed { position: absolute; width: 60px; height: 60px; cursor: grab; }
-.controls label { display: block; margin: 0.5rem 0; }
-textarea, input[type="number"], input[type="text"] { width: 100%; padding: 0.3rem; border-radius: 5px; border: none; background: #333; color: #eee; }
-textarea:focus, input:focus { outline: 2px solid #ffc107; }
+.palette { display:flex; gap:0.5rem; flex-wrap:wrap; justify-content:center; margin:0.5rem 0; }
+.palette img { width:60px; cursor:grab; border:2px solid #444; border-radius:5px; }
+.palette img:active { cursor:grabbing; }
 
-.krathong-list { display: flex; flex-direction: column-reverse; gap: 0.5rem; max-height: 400px; overflow-y: auto; border-top: 1px solid #444; padding-top: 0.5rem; }
-.krathong-item { background: #222; padding: 0.5rem; border-radius: 5px; font-size: 0.9rem; }
+.canvas { position:relative; width:100%; height:250px; border:2px dashed #555; border-radius:10px; margin-bottom:0.5rem; overflow:hidden; }
+.canvasHint { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#666; font-size:0.9rem; text-align:center; }
+.placed { position:absolute; width:60px; height:60px; cursor:grab; }
 
-footer { text-align: center; padding: 0.5rem; font-size: 0.8rem; color: #888; }
+textarea,input[type="number"],input[type="text"] { width:100%; padding:0.3rem; border-radius:5px; border:none; background:#333; color:#eee; margin-bottom:0.5rem; }
+textarea:focus,input:focus { outline:2px solid #ffc107; }
 
-/* Responsive */
-@media screen and (max-width: 768px) {
-  main { flex-direction: column; padding: 0.5rem; }
-  .canvas { height: 200px; }
-  .placed { width: 50px; height: 50px; }
-  button { padding: 0.4rem 0.8rem; }
-}
-@media screen and (max-width: 480px) {
-  header h1 { font-size: 1.5rem; }
-  .canvas { height: 150px; }
-  .placed { width: 40px; height: 40px; }
-}
+.krathong-list { display:flex; flex-direction:column-reverse; gap:0.5rem; max-height:400px; overflow-y:auto; border-top:1px solid #444; padding-top:0.5rem; }
+.krathong-item { background:#222; padding:0.5rem; border-radius:5px; font-size:0.9rem; }
+
+footer { text-align:center; padding:0.5rem; font-size:0.8rem; color:#888; }
+
+@media screen and (max-width:768px){ main{flex-direction:column;} .canvas{height:200px;} .placed{width:50px;height:50px;} button{padding:0.4rem 0.8rem;} }
+@media screen and (max-width:480px){ header h1{font-size:1.5rem;} .canvas{height:150px;} .placed{width:40px;height:40px;} }
